@@ -1,4 +1,5 @@
 import asyncio
+import io
 import cv2
 from PIL import Image
 from pathlib import Path
@@ -13,6 +14,20 @@ def blocking_io(channel):
     img.save(f"./output/test{channel}.jpg")
     data = Path(f"./output/test{channel}.jpg").read_bytes()
     return data
+
+
+def blocking_io_byteio(channel):
+    im = Image.open(f'./pics/{channel}.png')
+    buf = io.BytesIO()
+    im.save(buf, format='PNG')
+    return buf.getvalue()
+
+async def blocking_io_byteio_nok(channel):
+    im = Image.open(f'./pics/{channel}.png')
+    buf = io.BytesIO()
+    im.save(buf, format='PNG')
+    return buf.getvalue()
+
 
 
 async def blocking_io_slower(channel):
